@@ -14,20 +14,7 @@ let endpoint =
                    {%b|"<!doctype html>"::string,html::string|});
           scope "/p"
             [
-              get "/:source/:org/:repo/:ref" (fun conn ->
-                  let req =
-                    Package_proxy_controller.
-                      {
-                        source = conn.params |> List.assoc "source";
-                        org = conn.params |> List.assoc "org";
-                        repo = conn.params |> List.assoc "repo";
-                        ref = conn.params |> List.assoc "ref";
-                      }
-                  in
-
-                  let res = Package_proxy_controller.proxy req in
-
-                  conn |> Conn.send_response `OK res);
+              get "/:source/:org/:repo/:ref/:pkg" Package_proxy_controller.proxy;
             ];
         ]);
   ]
