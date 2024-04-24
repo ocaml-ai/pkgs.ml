@@ -17,6 +17,10 @@ RUN opam init
 
 RUN echo "cache-version: 0"
 
+# Typesense Search
+RUN curl -O https://dl.typesense.org/releases/26.0/typesense-server-26.0-amd64.deb
+RUN apt install ./typesense-server-26.0-amd64.deb
+
 # ACTUAL APP DEPS
 COPY *.opam .
 RUN opam install --deps-only --with-test ./pkgs.opam
