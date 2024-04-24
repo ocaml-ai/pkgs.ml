@@ -15,8 +15,7 @@ RUN ln -f /usr/bin/opam-2.1 /usr/bin/opam
 RUN opam --version
 RUN opam init
 
-RUN echo "cache-version: 13"
-RUN opam pin trail.0.0.1 git+https://github.com/suri-framework/trail
+RUN echo "cache-version: 0"
 RUN opam pin nomad.0.0.1 git+https://github.com/suri-framework/nomad
 
 # ACTUAL APP DEPS
