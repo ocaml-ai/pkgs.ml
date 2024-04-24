@@ -1,5 +1,5 @@
 (library
- (name typesense)
- (libraries yojson uri)
+ (name typesense_blink)
+ (libraries yojson uri riot blink)
  (preprocess
   (pps ppx_yojson_conv)))
