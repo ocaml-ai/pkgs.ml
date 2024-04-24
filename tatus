@@ -1,0 +1,47 @@
+[33mcommit c1a8c3c564c018ff1065827009ccbb06dd107e98[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: sabine <6594573+sabine@users.noreply.github.com>
+Date:   Wed Apr 24 18:32:42 2024 +0200
+
+    add mlx template
+
+[33mcommit a33af74b8835ceab30669f274f571b13deb607ea[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Leandro Ostera <leandro@abstractmachines.dev>
+Date:   Wed Apr 24 17:36:25 2024 +0100
+
+    split package proxy controller
+
+[33mcommit 3cbf629e3e5560893d6bd1194f76fb3d95aa5fdb[m
+Author: Leandro Ostera <leandro@abstractmachines.dev>
+Date:   Wed Apr 24 17:28:52 2024 +0100
+
+    split modules
+
+[33mcommit dc14c3042c83da00b34ae5e0e2e97f23c9eca5bc[m
+Author: Leandro Ostera <leandro@abstractmachines.dev>
+Date:   Wed Apr 24 17:23:15 2024 +0100
+
+    capture params and print url
+
+[33mcommit cd214bcd260c47d34e40f858b226a4fb55090300[m
+Author: sabine <6594573+sabine@users.noreply.github.com>
+Date:   Wed Apr 24 18:16:15 2024 +0200
+
+    add blink dependency
+
+[33mcommit 91e5bcb2ece3aff9d729d8a6c77625c47c2c2b3d[m
+Author: sabine <6594573+sabine@users.noreply.github.com>
+Date:   Wed Apr 24 18:05:39 2024 +0200
+
+    remove trail pin, add ocamlformat
+
+[33mcommit 768158739875471349f7856a14f777136a198da6[m
+Author: sabine <6594573+sabine@users.noreply.github.com>
+Date:   Wed Apr 24 17:28:53 2024 +0200
+
+    pin depends
+
+[33mcommit 55d5f66fbe645069ed6d6668e5ec193b152b1f27[m
+Author: Leandro Ostera <leandro@abstractmachines.dev>
+Date:   Wed Apr 24 16:23:00 2024 +0100
+
+    boot

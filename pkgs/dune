@@ -3,7 +3,7 @@
  (name pkgs)
  (preprocess
   (pps bytestring.ppx))
- (libraries trail nomad unix))
+ (libraries trail nomad blink unix))
 
 (env
  (docker
