@@ -1,7 +1,8 @@
 (executable
  (public_name pkgs_ml)
  (name pkgs)
- (preprocess (pps bytestring.ppx))
+ (preprocess
+  (pps bytestring.ppx))
  (libraries trail nomad unix))
 
 (env

@@ -4,19 +4,19 @@ module Endpoint = struct
   let trail =
     Trail.
       [
-        logger ~level:Debug ();
-        request_id { kind = Uuid_v4 };
-        router
-        [
-          get "/" (fun conn -> conn |> Conn.send_response `OK {%b|"hello world!"|});
-          scope "/p"
+        use (module Logger) Logger.(args ~level:Debug ());
+        (* request_id { kind = Uuid_v4 }; *)
+        Router.(
+          router
             [
-              get "/github.com" (fun conn ->
-                  Conn.send_response `OK {%b|"none"|} conn);
-            ];
-        ];
-
-        
+              get "/" (fun conn ->
+                  conn |> Conn.send_response `OK {%b|"hello world!"|});
+              scope "/p"
+                [
+                  get "/github.com" (fun conn ->
+                      Conn.send_response `OK {%b|"none"|} conn);
+                ];
+            ]);
       ]
 
   let start_link () =
@@ -32,7 +32,4 @@ module BazaarApp = struct
     start_link ~child_specs:[ child_spec Endpoint.start_link () ] ()
 end
 
-let () =
-  Riot.start
-    ~apps:[ (module Riot.Logger); (module BazaarApp)]
-    ()
+let () = Riot.start ~apps:[ (module Riot.Logger); (module BazaarApp) ] ()
