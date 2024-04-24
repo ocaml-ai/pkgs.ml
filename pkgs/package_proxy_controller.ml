@@ -33,7 +33,6 @@ let proxy conn =
     info (fun f -> f "dune-project: %S" file);
     Ok ()
   in
-
   let tarball_url = Github.get_ref_tarball ~org ~repo ~ref in
 
   conn

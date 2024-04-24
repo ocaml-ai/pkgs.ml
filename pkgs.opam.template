@@ -1,5 +1,5 @@
 pin-depends: [
   ["nomad.dev" "git+https://github.com/suri-framework/nomad"]
   ["blink.dev" "git+https://github.com/suri-framework/blink"]
-  ["mlx.dev" "git+https://github.com/ocaml-mlx/mlx"]
+  ["mlx.dev" "https://github.com/ocaml-mlx/mlx/archive/main.tar.gz"]
 ]
