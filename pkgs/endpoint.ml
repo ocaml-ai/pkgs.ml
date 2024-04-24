@@ -8,7 +8,7 @@ let endpoint =
       router
         [
           get "/" (fun conn ->
-              let html = Template.render () in
+              let html = Template.render () |> Html_of_jsx.render in
               conn |> Conn.send_response `OK {%b|html::string|});
           scope "/p"
             [

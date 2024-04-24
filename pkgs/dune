@@ -2,8 +2,8 @@
  (public_name pkgs_ml)
  (name pkgs)
  (preprocess
-  (pps bytestring.ppx))
- (libraries trail nomad blink unix))
+  (pps bytestring.ppx html_of_jsx.ppx))
+ (libraries trail nomad blink unix html_of_jsx.lib))
 
 (env
  (docker

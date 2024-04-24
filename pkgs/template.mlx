@@ -1,23 +1,5 @@
-type doc = Element  of string * doc list | Text of string
-
-let render d =
-  let rec render indent =
-    let indents = List.init indent (fun _ -> "  ") |> String.concat "" in
-    function
-    | Element(name, children) ->
-      let children = List.map (render (indent + 1)) children in
-      Printf.sprintf "%s<%s>\n%s\n%s</%s>" indents name (String.concat "\n" children) indents name
-    | Text s -> Printf.sprintf "%s%s" indents s
-  in
-  render 0 d
-
-let div ~children () = Element ("div", children)
-let text s = Text s
-
 let render () =
-  (render (
-    <div>
-      <div>(text "title")</div>
-      <div>(text "content")</div>
-    </div>
-  ))
+   <a href="https://x.com/davesnx">
+    <span> ("Click me!") </span>
+  </a>
+

@@ -13,6 +13,7 @@ depends: [
   "nomad"
   "blink"
   "mlx"
+  "html_of_jsx"
   "odoc" {with-doc}
 ]
 build: [
