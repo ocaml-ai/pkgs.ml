@@ -25,4 +25,6 @@ let proxy conn =
     Format.sprintf "https://%s/%s/%s/%s" req.source req.org req.repo req.ref
   in
 
-  conn |> Conn.with_header "Location" redirect |> Conn.send_response `Temporary_redirect {%b||}
+  conn
+  |> Conn.with_header "Location" redirect
+  |> Conn.send_response `Temporary_redirect {%b||}

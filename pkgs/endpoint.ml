@@ -1,4 +1,3 @@
-open Riot
 open Trail
 
 let endpoint =
@@ -7,11 +6,7 @@ let endpoint =
     Router.(
       router
         [
-          get "/" (fun conn ->
-              let html = Template.homepage () |> Html_of_jsx.render in
-              conn
-              |> Conn.send_response `OK
-                   {%b|"<!doctype html>"::string,html::string|});
+          get "/" Home_controller.get;
           scope "/p"
             [
               get "/:source/:org/:repo/:ref/:pkg" Package_proxy_controller.proxy;

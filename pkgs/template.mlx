@@ -1,10 +1,14 @@
+open Jsx
+
+let title = text "Pkgs.ml"
+
 let homepage () =
   <html lang="en">
-  <head>
-  <meta charSet="utf-8"/>
-  <title>("Pkgs.ml")</title>
-  </head>
-  <body>
-  <h1>("Pkgs.ml")</h1>
-  </body>
+    <head>
+      <meta charSet="utf-8"/>
+      <title>(title)</title>
+    </head>
+    <body>
+      <h1>(title)</h1>
+    </body>
   </html>
