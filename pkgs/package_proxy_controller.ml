@@ -30,7 +30,7 @@ let proxy conn =
 
   let _dune_file =
     let* file = Github.get_file ~org ~repo ~ref ~file:"dune-project" in
-    info (fun f -> f "dune-project: %S" file);
+    error (fun f -> f "dune-project: %S" file);
     Ok ()
   in
   let tarball_url = Github.get_ref_tarball ~org ~repo ~ref in
