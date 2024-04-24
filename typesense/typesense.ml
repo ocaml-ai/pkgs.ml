@@ -61,7 +61,6 @@ module RequestDescriptor = struct
         params : (string * string list) list;
         body : string;
       }
-  [@@deriving show]
 
   let headers ~config =
     [
