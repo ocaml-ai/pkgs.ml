@@ -5,7 +5,6 @@ module Endpoint = struct
     Trail.
       [
         use (module Logger) Logger.(args ~level:Debug ());
-        (* request_id { kind = Uuid_v4 }; *)
         Router.(
           router
             [
