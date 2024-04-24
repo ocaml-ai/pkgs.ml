@@ -14,6 +14,8 @@ depends: [
   "blink"
   "mlx"
   "html_of_jsx"
+  "yojson"
+  "ppx_yojson_conv"
   "odoc" {with-doc}
 ]
 build: [

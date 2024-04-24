@@ -13,7 +13,11 @@
  (name pkgs)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune trail nomad blink mlx html_of_jsx)
+ (depends ocaml dune trail nomad blink mlx html_of_jsx
+  ; typesense-ocaml
+  yojson
+  ppx_yojson_conv
+ )
  (tags
   (topics "to describe" your project)))
 
