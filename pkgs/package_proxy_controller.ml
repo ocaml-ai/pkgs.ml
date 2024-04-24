@@ -1,5 +1,12 @@
 open Riot
+
+open Logger.Make (struct
+  let namespace = [ "pkgs"; "package_proxy_controller" ]
+end)
+
 open Trail
+
+let ( let* ) = Result.bind
 
 type request = {
   source : string;
@@ -10,7 +17,7 @@ type request = {
 }
 
 let proxy conn =
-  let req =
+  let { org; repo; ref; _ } =
     Trail.Conn.
       {
         source = conn.params |> List.assoc "source";
@@ -21,10 +28,14 @@ let proxy conn =
       }
   in
 
-  let redirect =
-    Format.sprintf "https://%s/%s/%s/%s" req.source req.org req.repo req.ref
+  let _dune_file =
+    let* file = Github.get_file ~org ~repo ~ref ~file:"dune-project" in
+    info (fun f -> f "dune-project: %S" file);
+    Ok ()
   in
 
+  let tarball_url = Github.get_ref_tarball ~org ~repo ~ref in
+
   conn
-  |> Conn.with_header "Location" redirect
+  |> Conn.with_header "Location" tarball_url
   |> Conn.send_response `Temporary_redirect {%b||}
