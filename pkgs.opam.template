@@ -1,0 +1,4 @@
+pin-depends: [
+  ["trail.dev" "git+https://github.com/suri-framework/trail"]
+  ["nomad.dev" "git+https://github.com/suri-framework/nomad"]
+]

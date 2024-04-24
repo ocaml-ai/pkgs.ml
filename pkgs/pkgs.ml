@@ -6,7 +6,17 @@ module Endpoint = struct
       [
         logger ~level:Debug ();
         request_id { kind = Uuid_v4 };
-        (fun conn -> conn |> Conn.send_response `OK {%b|"hello world!"|});
+        router
+        [
+          get "/" (fun conn -> conn |> Conn.send_response `OK {%b|"hello world!"|});
+          scope "/p"
+            [
+              get "/github.com" (fun conn ->
+                  Conn.send_response `OK {%b|"none"|} conn);
+            ];
+        ];
+
+        
       ]
 
   let start_link () =

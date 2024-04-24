@@ -1,4 +1,4 @@
-(lang dune 3.12)
+(lang dune 3.13)
 
 (name pkgs)
 
@@ -13,6 +13,6 @@
  (name pkgs)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune trail)
+ (depends ocaml dune trail nomad)
  (tags
   (topics "to describe" your project)))
