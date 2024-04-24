@@ -1,5 +1,10 @@
-let render () =
-   <a href="https://x.com/davesnx">
-    <span> ("Click me!") </span>
-  </a>
-
+let homepage () =
+  <html lang="en">
+  <head>
+  <meta charSet="utf-8"/>
+  <title>("Pkgs.ml")</title>
+  </head>
+  <body>
+  <h1>("Pkgs.ml")</h1>
+  </body>
+  </html>

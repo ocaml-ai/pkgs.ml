@@ -8,8 +8,10 @@ let endpoint =
       router
         [
           get "/" (fun conn ->
-              let html = Template.render () |> Html_of_jsx.render in
-              conn |> Conn.send_response `OK {%b|html::string|});
+              let html = Template.homepage () |> Html_of_jsx.render in
+              conn
+              |> Conn.send_response `OK
+                   {%b|"<!doctype html>"::string,html::string|});
           scope "/p"
             [
               get "/:source/:org/:repo/:ref" (fun conn ->
