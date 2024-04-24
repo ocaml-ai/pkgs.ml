@@ -10,8 +10,8 @@ USER 0
 # RUN apt-get update -y && apt-get install libgmp-dev -y
 RUN apk add gmp-dev
 
-# hack to get opam 2.1 running
-RUN ln -f /usr/bin/opam-2.1 /usr/bin/opam
+# hack to get opam 2.2 running
+RUN ln -f /usr/bin/opam-2.2 /usr/bin/opam
 RUN opam --version
 RUN opam init
 
