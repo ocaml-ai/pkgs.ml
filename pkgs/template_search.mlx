@@ -1,7 +1,7 @@
 open Jsx
 
 let render_package (package: Package_search_index.document) =
-  <h3>(text package.id)</h3>
+  <a class_="flex underline hover:no-underline" href=(Url.package_info_url package)>(text package.id)</a>
 
 let render ~found ~q ~(packages: Package_search_index.document list) =
   let package_els = List.map render_package packages in
