@@ -33,16 +33,15 @@ function showCopyToClipboardMessage() {
   </div>
 
 let render ~(package_info: Package_registry.add_package_request) =
-  let title = text (
-    package_info.package_name ^ " (" ^ package_info.ref ^
-    ")")
+  let title =
+    package_info.package_name ^ " (" ^ package_info.ref ^ ")"
   in
   let repo_url = package_info.source ^ "/" ^package_info.org ^ "/" ^ package_info.repo in
   let text_to_copy = Printf.sprintf {|["%s.pkgs_ml" "%s"]|} package_info.package_name (Url.package_download_url package_info) in
   <Template_layout title=(title)>
     <div class_="mt-12 py-6">
       <div class_="container mx-auto">
-        <h1 class_="text-2xl mb-4 font-semibold">(title)</h1>
+        <h1 class_="text-2xl mb-4 font-semibold">(text title)</h1>
         <a class_="underline hover:no-underline" href=("https://" ^ repo_url)>(text (repo_url))</a>
       </div>
     </div>

@@ -88,8 +88,8 @@ let stats =
 
 let make ~packages:_ () =
   <Template_layout title=(I18n.title)>
-    (list [
+    [
      hero;
      stats
-    ])
+    ]
   </Template_layout>

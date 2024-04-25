@@ -8,6 +8,6 @@ let make ~title ~children () =
       <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
-      (children)
+      (list children)
     </body>
   </html>
