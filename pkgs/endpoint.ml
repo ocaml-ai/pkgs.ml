@@ -7,6 +7,8 @@ let endpoint =
       router
         [
           get "/" Home_controller.get;
+          get "/search/:q" Search_controller.get;
+          get "/i/:source/:org/:repo/:ref/:pkg" Package_info_controller.get;
           scope "/p"
             [
               get "/:source/:org/:repo/:ref/:pkg" Package_proxy_controller.proxy;
