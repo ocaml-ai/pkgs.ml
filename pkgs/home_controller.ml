@@ -16,13 +16,13 @@ TODO(leostera):
 *)
 
 let total_downloads () =
-  Task.async @@ fun  () ->
+  Task.async @@ fun () ->
   Clickhouse.execute Config.clickhouse_config
     "SELECT COUNT(*) FROM package_installs"
-  |> Result.get_ok 
+  |> Result.get_ok
 
 let total_packages () =
-  Task.async @@ fun  () ->
+  Task.async @@ fun () ->
   Clickhouse.execute Config.clickhouse_config
     "SELECT COUNT(DISTINCT package_repo) FROM package_installs"
   |> Result.get_ok

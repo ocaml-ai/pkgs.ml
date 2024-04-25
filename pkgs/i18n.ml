@@ -6,5 +6,4 @@ let description =
    install them with zero fuss."
 
 let downloads = "Downloads"
-
 let packages = "Packages in stock"
