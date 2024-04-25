@@ -4,5 +4,5 @@ let package_download_url (package_info : Package_registry.add_package_request) =
     package_info.package_name
 
 let package_info_url (package : Package_search_index.document) =
-  Printf.sprintf {|/i/%s/%s/%s/%s/%s|} package.source package.org
-    package.repo package.ref package.pkg
+  Printf.sprintf {|/i/%s/%s/%s/%s/%s|} package.source package.org package.repo
+    package.ref package.pkg
