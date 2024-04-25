@@ -30,20 +30,22 @@ let proxy conn =
 
   let _dune_file =
     let* file = Github.get_file ~org ~repo ~ref ~file:"dune-project" in
-    (if String.length file > 0 then
-       Package_search_index.(
-         add_package
-           {
-             id =
-               Printf.sprintf "%s/%s/%s/%s/%s" source org repo ref package_name;
-             source;
-             org;
-             repo;
-             ref;
-             pkg = package_name;
-             tags = [];
-             downloads = 0L;
-           }));
+    if String.length file > 0 then
+      Package_search_index.(
+        add_package
+          {
+            id =
+              Printf.sprintf "%s/%s/%s/%s/%s" source org repo ref package_name;
+            source;
+            org;
+            repo;
+            ref;
+            pkg = package_name;
+            tags = [];
+            downloads = 0L;
+          })
+      |> ignore;
+
     error (fun f -> f "dune-project: %S" file);
     Ok ()
   in
