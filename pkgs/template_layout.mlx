@@ -1,5 +1,28 @@
 open Jsx
 
+let navbar =
+  <nav class_="fixed flex gap-4 px-6 top-0 w-full h-12 bg-[rgb(213,64,0)] text-white">
+    <a class_="px-3 py-1 leading-9 h-full font-semibold hover:underline border-2 border-transparent focus:border-black focus:outline-none"
+        href="/">("pkgs.ml")</a>
+    <form method_="GET" action="/search" class_="flex">
+    (* TODO: add autocomplete="off" on <form> *)
+      <input type_="search" name="q" placeholder="search packages..."
+        class_="h-12 w-full font-normal
+              text-black
+              bg-white
+              focus:ring-0 focus:outline-none appearance-none
+              border-[1px] border-gray-200 border-r-0 focus:border-black
+              px-3 py-1 placeholder-text-gray-800
+              "
+        />
+        <button type_="submit" title="Search" class_="px-3 bg-black text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class_="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </button>
+    </form>
+  </nav>
+
 let make ~title ~children () =
   <html lang="en">
     <head>
