@@ -1,0 +1,26 @@
+open Jsx
+
+let title = text "pkgs.ml"
+
+let render_package (package: Package_search_index.document) =
+  <h3>(text package.id)</h3>
+
+let render ~(packages: Package_search_index.document list) =
+  let package_els = List.map render_package packages in
+  <Template_layout title=(title)>
+    <div class_="mt-12 p-12">
+      <div class_="container mx-auto">
+        <h1 class_="text-5xl mb-4 font-semibold">(title)</h1>
+        <p>"Package directory for OCaml packages on GitHub"</p>
+      </div>
+    </div>
+    <div class_="container mx-auto py-10">
+      <div>
+      <h2 class_="text-2xl font-normal">"Most Downloaded Packages"</h2>
+      (list package_els)
+      </div>
+    </div>
+    <div class_="h-96"></div>
+    <div class_="h-96"></div>
+    <div class_="h-96"></div>
+  </Template_layout>

@@ -1,0 +1,17 @@
+open Jsx
+
+let title = "Search Results for '" ^ q ^ "'"
+
+let render ~q ~(packages: Package_search_index.document list) =
+  let package_els = List.map render_package packages in
+  <Template_layout title=(title)>
+    <div class_="mt-12 p-12">
+      <div class_="container mx-auto">
+        <h1 class_="text-5xl mb-4 font-semibold">(title)</h1>
+        <p>"Package directory for OCaml packages on GitHub"</p>
+      </div>
+    </div>
+    <div class_="container mx-auto py-10">
+      (list package_els)
+    </div>
+  </Template_layout>

@@ -10,7 +10,7 @@ let get conn =
   let response = Package_search_index.search ~q:"" () in
   match response with
   | Ok (packages, _, _, _) ->
-      let html = Template.homepage ~packages |> Html_of_jsx.render in
+      let html = Template_home.render ~packages |> Html_of_jsx.render in
       conn
       |> Conn.send_response `OK {%b|"<!doctype html>"::string,html::string|}
   | Error (#Riot.IO.io_error as e) ->
