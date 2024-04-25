@@ -1,10 +1,11 @@
 open Riot
+
 let ( let* ) = Result.bind
 
 let github_user_content_host =
   "https://raw.githubusercontent.com" |> Uri.of_string
 
-let get_ref_tarball ~org ~repo ~ref = 
+let get_ref_tarball ~org ~repo ~ref =
   Format.sprintf "https://github.com/%s/%s/archive/%s.tar.gz" org repo ref
 
 let get_file ~org ~repo ~ref ~file =

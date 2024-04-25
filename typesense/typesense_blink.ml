@@ -1,4 +1,4 @@
-module Typesense_blink_riot = struct
+module Request = struct
   [@@@warning "-8"]
 
   let ( let* ) = Result.bind
@@ -88,64 +88,12 @@ let config =
 
 let make_blink_request = function
   | Typesense.RequestDescriptor.Get { host; path; headers; params } ->
-      Typesense_blink_riot.get ~headers ~params ~host path
+      Request.get ~headers ~params ~host path
   | Post { host; path; headers; params; body } ->
-      Typesense_blink_riot.post ~headers ~params ~host ~body path
+      Request.post ~headers ~params ~host ~body path
   | Delete { host; path; headers; params } ->
-      Typesense_blink_riot.delete ~headers ~params ~host path
+      Request.delete ~headers ~params ~host path
   | Patch { host; path; headers; params; body } ->
-      Typesense_blink_riot.patch ~headers ~params ~host ~body path
+      Request.patch ~headers ~params ~host ~body path
   | Put { host; path; headers; params; body } ->
-      Typesense_blink_riot.put ~headers ~params ~host ~body path
-
-(* 
-let run_request ~make_request title r =
-  print_endline title;
-  (* print_endline @@ Typesense.RequestDescriptor.show_request r; *)
-  print_endline "";
-  let response = make_request r in
-  match response with
-  | Ok (`Success response) -> print_endline response
-  | Error (`Msg m) -> print_endline m
-
-let example_schema =
-  Typesense.Schema.(
-    schema "companies"
-      [
-        create_field "company_name" String;
-        create_field "num_employees" Int32;
-        create_field "country" String ~facet:true;
-        create_field "company_category" String ~facet:true;
-      ]
-      ~default_sorting_field:"num_employees")
-
-let run_blink_client_tests () =
-  let ( let* ) = Result.bind in
-  let run_request = run_request ~make_request:make_blink_request in
-
-  Riot.run @@ fun () ->
-  Result.get_ok
-  @@
-  let* _ = Riot.Logger.start () in
-
-  run_request "create collection"
-    (Typesense.Collection.create ~config example_schema);
-
-  run_request "list collections" (Typesense.Collection.list ~config);
-
-  run_request "update collection"
-    (Typesense.Collection.update ~config example_schema.name
-       Typesense.Schema.(
-         update_schema
-           [
-             Drop "company_category";
-             Add (create_field "company_category" StringArray ~facet:true);
-           ]));
-
-  run_request "delete collection"
-    (Typesense.Collection.delete ~config example_schema.name);
-
-  Riot.shutdown () |> ignore;
-  Ok ()
-
-let () = run_blink_client_tests () *)
+      Request.put ~headers ~params ~host ~body path

@@ -62,6 +62,38 @@ module RequestDescriptor = struct
         body : string;
       }
 
+  let show_request = function
+    | Get { host; path; headers; params } ->
+        Printf.sprintf "Get { host = %s; path = %s; headers = %s; params = %s}"
+          host path
+          (List.map (fun (x, y) -> "(" ^ x ^ "=" ^ y ^ ")") headers
+          |> String.concat ",")
+          (List.map
+             (fun (x, y) -> "(" ^ x ^ "=" ^ String.concat "&" y ^ ")")
+             params
+          |> String.concat ",")
+    | Post { host; path; headers; params; body } ->
+        Printf.sprintf
+          "Post { host = %s; path = %s; headers = %s; params = %s; body=\"%s\"}"
+          host path
+          (List.map (fun (x, y) -> "(" ^ x ^ "=" ^ y ^ ")") headers
+          |> String.concat ",")
+          (List.map
+             (fun (x, y) -> "(" ^ x ^ "=" ^ String.concat "&" y ^ ")")
+             params
+          |> String.concat ",")
+          body
+    | Delete { host; path; headers; params; _ } ->
+        Printf.sprintf
+          "Delete { host = %s; path = %s; headers = %s; params = %s}" host path
+          (List.map (fun (x, y) -> "(" ^ x ^ "=" ^ y ^ ")") headers
+          |> String.concat ",")
+          (List.map
+             (fun (x, y) -> "(" ^ x ^ "=" ^ String.concat "&" y ^ ")")
+             params
+          |> String.concat ",")
+    | _ -> "other req"
+
   let headers ~config =
     [
       ("X-TYPESENSE-API-KEY", config.api_key);
