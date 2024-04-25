@@ -7,7 +7,7 @@ let render ~found ~q ~(packages: Package_search_index.document list) =
   let package_els = List.map render_package packages in
   let title = string_of_int found ^ " Search Results for '" ^ q ^ "'" in
   <Template_layout title=(title)>
-    (Template_layout.navbar)
+    (Template_layout.navbar ~q ())
     <div class_="mt-12 py-6">
       <div class_="container mx-auto">
         <h1 class_="text-2xl mb-4 font-semibold">(text title)</h1>

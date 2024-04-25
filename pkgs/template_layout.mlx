@@ -1,6 +1,6 @@
 open Jsx
 
-let navbar =
+let navbar ?(q = "") () =
   <nav class_="fixed flex gap-4 px-6 top-0 w-full h-12 bg-[rgb(213,64,0)] text-white">
     <a class_="px-3 py-1 leading-9 h-full font-semibold hover:underline border-2 border-transparent focus:border-black focus:outline-none"
         href="/">("pkgs.ml")</a>
@@ -14,6 +14,7 @@ let navbar =
               border-[1px] border-gray-200 border-r-0 focus:border-black
               px-3 py-1 placeholder-text-gray-800
               "
+        value=(q)
         />
         <button type_="submit" title="Search" class_="px-3 bg-black text-white">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class_="w-6 h-6">
