@@ -5,8 +5,10 @@ let ( let* ) = Result.bind
 let github_user_content_host =
   "https://raw.githubusercontent.com" |> Uri.of_string
 
+let get_repo_url ~org ~repo = Format.sprintf "https://github.com/%s/%s" org repo
+
 let get_ref_tarball ~org ~repo ~ref =
-  Format.sprintf "https://github.com/%s/%s/archive/%s.tar.gz" org repo ref
+  Format.sprintf "%s/archive/%s.tar.gz" (get_repo_url ~org ~repo) ref
 
 let get_file ~org ~repo ~ref ~file =
   let* conn = Blink.connect github_user_content_host in
