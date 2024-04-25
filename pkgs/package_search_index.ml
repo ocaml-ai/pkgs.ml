@@ -30,32 +30,31 @@ let collection_name = "packages"
 
 (* {"name":"packages","fields":[{"name":"id", "type":"string"},{"name":"source","type":"string"},{"name":"org","type":"string"},{"name":"repo","type":"string"},{"name":"ref","type":"string"},{"name":"pkg","type":"string"},{"name":"tags","type":"string[]","facet":true},{"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"} *)
 
+let ( let* ) = Result.bind
+
 let run_request r =
   print_endline @@ Typesense.RequestDescriptor.show_request r;
   print_endline Config.typesense_config.url;
-  let response = Typesense_blink.make_blink_request r in
-  match response with
-  | Ok (`Success response) ->
-      let r =
-        try
-          response |> Yojson.Safe.from_string
-          |> Typesense.Search.SearchResponse.t_of_yojson
-        with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
-          failwith (Printexc.to_string s)
-      in
-      let result =
-        ( List.map
-            (fun (hit : Typesense.Search.SearchResponse.search_response_hit) ->
-              try hit.document |> document_of_yojson
-              with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
-                failwith (Printexc.to_string s))
-            r.hits,
-          r.found,
-          r.page,
-          r.facet_counts )
-      in
-      Ok result
-  | Error (`Msg m) -> Error (`Msg m)
+  let* response = Typesense_blink.make_blink_request r in
+  let r =
+    try
+      response |> Yojson.Safe.from_string
+      |> Typesense.Search.SearchResponse.t_of_yojson
+    with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+      failwith (Printexc.to_string s)
+  in
+  let result =
+    ( List.map
+        (fun (hit : Typesense.Search.SearchResponse.search_response_hit) ->
+          try hit.document |> document_of_yojson
+          with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+            failwith (Printexc.to_string s))
+        r.hits,
+      r.found,
+      r.page,
+      r.facet_counts )
+  in
+  Ok result
 
 (*
    let delete_collection () =

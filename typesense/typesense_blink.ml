@@ -12,54 +12,30 @@ module Request = struct
       Uri.add_query_params path params |> Uri.to_string
     in
 
-    let* conn =
-      Blink.connect (Uri.of_string host)
-      |> Result.map_error (fun e ->
-             match e with
-             | `Closed -> `Msg "closed on Blink.connect"
-             | `Invalid_uri u -> `Msg ("invalid uri: " ^ Uri.to_string u)
-             | `Msg m -> `Msg m
-             | `Tls_error _ -> `Msg "Tls_error"
-             | `Unix_error e -> `Msg (Unix.error_message e)
-             | _ -> `Msg "other error")
-    in
+    let* conn = Blink.connect (Uri.of_string host) in
+
+    let body = body |> Option.map Riot.Bytestring.of_string in
 
     let req = Http.Request.make ~meth ~headers path in
-    let body = body |> Option.map Riot.Bytestring.of_string in
-    let* conn =
-      Blink.request ?body conn req ()
-      |> Result.map_error (fun e ->
-             match e with
-             | `Closed -> `Msg "closed on Blink.request"
-             | `Unix_error e -> `Msg (Unix.error_message e)
-             | _ -> `Msg "other error")
-    in
-    let* _conn, [ `Status status; `Headers _headers; `Data body; `Done ] =
-      Blink.stream conn
-      |> Result.map_error (fun e ->
-             match e with
-             | `Closed -> `Msg "closed on Blink.stream"
-             | `Eof -> `Msg "Eof"
-             | `Response_parsing_error -> `Msg "Response_parsing_error"
-             | `Unix_error e -> `Msg (Unix.error_message e)
-             | _ -> `Msg "other error")
-    in
 
-    match status with
-    | `OK -> Ok (`Success (Riot.Bytestring.to_string body))
-    | _ ->
-        Riot.Logger.error (fun f ->
-            f "> Got response:\n%s\n%s\n%d\n%!"
-              (Http.Status.to_string status)
-              (Http.Header.to_lines headers |> String.concat "")
-              (Riot.Bytestring.length body));
-
-        Error
-          (`Msg
-            (Printf.sprintf "> Got response:\n%s\n%s\n%d\n%!"
-               (Http.Status.to_string status)
-               (Http.Header.to_lines headers |> String.concat "")
-               (Riot.Bytestring.length body)))
+    let* conn = Blink.request ?body conn req () in
+    let rec stream conn acc =
+      let* conn, frames = Blink.stream conn in
+      match frames with
+      | [ `Done ] -> Ok (List.rev acc)
+      | frames -> stream conn (frames @ acc)
+    in
+    let* parts = stream conn [] in
+    let* data =
+      List.find_map
+        (fun (frame : Blink.Connection.message) ->
+          match frame with
+          | `Data data -> Some (Riot.Bytestring.to_string data)
+          | _ -> None)
+        parts
+      |> Option.to_result ~none:`no_data_in_file
+    in
+    Ok data
 
   let get ?(headers = []) ?(params = []) ~host path =
     make ~meth:`GET ~headers ~params ~host path
