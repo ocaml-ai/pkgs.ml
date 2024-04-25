@@ -11,6 +11,6 @@ let env ?default var =
 let typesense_config =
   Typesense.
     {
-      api_key = env ~default:"dummy" "TYPESENSE_API_KEY";
-      url = env ~default:"dummy" "TYPESENSE_API_URL";
+      api_key = env "TYPESENSE_API_KEY";
+      url = env "TYPESENSE_API_URL";
     }
