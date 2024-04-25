@@ -1,5 +1,4 @@
 pin-depends: [
-  ["nomad.dev" "https://pkgs-ml.fly.dev/p/github.com/suri-framework/nomad/main/nomad"]
-  ["blink.dev" "https://pkgs-ml.fly.dev/p/github.com/suri-framework/blink/main/blink"]
-  ["mlx.dev" "https://pkgs-ml.fly.dev/p/github.com/ocaml-mlx/mlx/main/mlx"]
+  ["blink.dev" "https://pkgs-ml.fly.dev/p/github.com/suri-framework/blink/opam-pin-depends-bug/blink"]
+  ["mlx.dev" "https://pkgs-ml.fly.dev/p/github.com/ocaml-mlx/mlx/opam-pin-depends-bug/mlx"]
 ]

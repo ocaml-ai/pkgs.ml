@@ -23,7 +23,7 @@ RUN echo "cache-version: 0"
 
 # ACTUAL APP DEPS
 COPY *.opam .
-RUN opam install --deps-only --with-test -vvv ./pkgs.opam
+RUN opam install --deps-only --with-test --debug-level=3 ./pkgs.opam
 
 # BUILD APP
 COPY . .
