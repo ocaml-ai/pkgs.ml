@@ -9,8 +9,4 @@ let env ?default var =
   | Some x, _ -> x
 
 let typesense_config =
-  Typesense.
-    {
-      api_key = env "TYPESENSE_API_KEY";
-      url = env "TYPESENSE_API_URL";
-    }
+  Typesense.{ api_key = env "TYPESENSE_API_KEY"; url = env "TYPESENSE_API_URL" }

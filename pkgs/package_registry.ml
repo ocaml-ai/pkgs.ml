@@ -39,6 +39,8 @@ and handle_add_package { source; org; repo; ref; package_name } =
           repo;
           ref;
           pkg = package_name;
+          synopsis = "";
+          description = "";
           tags = [];
           downloads = 0L;
         })
