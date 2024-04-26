@@ -18,6 +18,7 @@
   yojson
   ppx_yojson_conv
   sexplib
+  stdune
  )
  (tags
   (topics "to describe" your project)))
