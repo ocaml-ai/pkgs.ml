@@ -16,7 +16,7 @@ depends: [
   "html_of_jsx"
   "cohttp"
   "cohttp-lwt-unix"
-  "lwt_ssl"
+  "tls-lwt"
   "yojson"
   "ppx_yojson_conv"
   "odoc" {with-doc}
