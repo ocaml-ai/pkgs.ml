@@ -1,5 +1,9 @@
 open Riot
 
+open Logger.Make (struct
+  let namespace = [ "github" ]
+end)
+
 let ( let* ) = Result.bind
 
 let github_user_content_host =
@@ -20,17 +24,28 @@ let get_file ~org ~repo ~ref ~file =
   let rec stream conn acc =
     let* conn, frames = Blink.stream conn in
     match frames with
-    | [ `Done ] -> Ok (List.rev acc)
-    | frames -> stream conn (frames @ acc)
+    | [ `Done ] -> Ok (List.rev acc |> List.flatten)
+    | frames -> stream conn (frames :: acc)
   in
   let* parts = stream conn [] in
-  let* data =
+  let* status =
     List.find_map
       (fun (frame : Blink.Connection.message) ->
         match frame with
-        | `Data data -> Some (Bytestring.to_string data)
+        | `Status status -> Some (Http.Status.to_int status)
         | _ -> None)
       parts
-    |> Option.to_result ~none:`no_data_in_file
+    |> Option.to_result ~none:`no_status_found
   in
-  Ok data
+  let data =
+    parts
+    |> List.filter_map (fun (frame : Blink.Connection.message) ->
+           match frame with
+           | `Data data ->
+               info (fun f -> f "data: %S" (Bytestring.to_string data));
+               Some data
+           | _ -> None)
+    |> List.fold_left Bytestring.join Bytestring.empty
+    |> Bytestring.to_string
+  in
+  Ok (status, data)

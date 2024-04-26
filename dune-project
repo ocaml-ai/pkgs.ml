@@ -13,7 +13,9 @@
  (name pkgs)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune trail nomad blink mlx html_of_jsx
+ (depends ocaml dune trail nomad blink mlx html_of_jsx serde serde_derive serde_sexpr serde_json
+ ; cohttp
+ cohttp cohttp-lwt-unix lwt_ssl
   ; typesense-ocaml
   yojson
   ppx_yojson_conv

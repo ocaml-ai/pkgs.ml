@@ -2,7 +2,7 @@ open Riot
 open Supervisor
 
 let start () =
-  Logger.set_log_level (Some Info);
+  Logger.set_log_level (Some Debug);
   start_link
     ~child_specs:
       [

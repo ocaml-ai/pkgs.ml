@@ -1,3 +1,5 @@
+open Riot
+
 module Request = struct
   [@@@warning "-8"]
 
@@ -26,14 +28,21 @@ module Request = struct
       | frames -> stream conn (frames @ acc)
     in
     let* parts = stream conn [] in
-    let* data =
+    let* _status =
       List.find_map
         (fun (frame : Blink.Connection.message) ->
           match frame with
-          | `Data data -> Some (Riot.Bytestring.to_string data)
+          | `Status status -> Some (Http.Status.to_int status)
           | _ -> None)
         parts
-      |> Option.to_result ~none:`no_data_in_file
+      |> Option.to_result ~none:`no_status_found
+    in
+    let data =
+      parts
+      |> List.filter_map (fun (frame : Blink.Connection.message) ->
+             match frame with `Data data -> Some data | _ -> None)
+      |> List.fold_left Bytestring.join Bytestring.empty
+      |> Bytestring.to_string
     in
     Ok data
 

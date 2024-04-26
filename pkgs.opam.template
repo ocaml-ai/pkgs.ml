@@ -1,4 +1,8 @@
 pin-depends: [
+  ["serde.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
+  ["serde_derive.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
+  ["serde_sexpr.dev" "https://github.com/serde-ml/sexpr/archive/main.tar.gz"]
+  ["serde_json.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
   ["blink.dev" "https://github.com/suri-framework/blink/archive/opam-pin-depends-bug.tar.gz"]
   ["mlx.dev" "https://github.com/ocaml-mlx/mlx/archive/opam-pin-depends-bug.tar.gz"]
 ]
