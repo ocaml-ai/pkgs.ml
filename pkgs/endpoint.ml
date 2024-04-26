@@ -7,7 +7,7 @@ let endpoint =
       router
         [
           get "/" Home_controller.get;
-          get "/search/:q" Search_controller.get;
+          get "/search" Search_controller.get;
           get "/i/:source/:org/:repo/:ref/:pkg" Package_info_controller.get;
           scope "/p"
             [
@@ -18,4 +18,4 @@ let endpoint =
 
 let start_link () =
   let handler = Nomad.trail endpoint in
-  Nomad.start_link ~port:8080 ~handler ()
+  Nomad.start_link ~acceptors:1 ~port:8080 ~handler ()

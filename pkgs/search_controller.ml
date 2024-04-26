@@ -7,11 +7,7 @@ end)
 open Trail
 
 let get conn =
-  (* TODO(@sabine): let q =
-       try Trail.Conn.(conn.req.query) |> List.assoc "q" |> List.hd
-       with Not_found -> ""
-     in *)
-  let q = Trail.Conn.(conn.params) |> List.assoc "q" in
+  let q = Trail.Conn.(conn.req.query) |> List.assoc "q" |> List.hd in
   let packages, found, _, _ =
     Package_search_index.search ~q () |> Result.get_ok
   in
