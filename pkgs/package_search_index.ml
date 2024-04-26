@@ -37,6 +37,18 @@ let collection_name = "packages"
    {"name":"pkg","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
    {"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"} *)
 
+(*
+curl "https://typesense.pkgs.ml/collections" \
+       -X POST \
+       -H "Content-Type: application/json" \
+       -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" \
+       -d '{"name":"packages","fields":[{"name":"id", "type":"string"},{"name":"source","type":"string"},
+   {"name":"org","type":"string"},{"name":"repo","type":"string"},{"name":"ref","type":"string"},
+   {"name":"pkg","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
+   {"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"}'
+   
+*)
+
 let ( let* ) = Result.bind
 
 let run_request r =
