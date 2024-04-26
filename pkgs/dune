@@ -13,8 +13,7 @@
   serde
   serde_sexpr
   serde_json
-  cohttp
-  cohttp-lwt-unix
+  sexplib
   ppx_yojson_conv))
 
 (env

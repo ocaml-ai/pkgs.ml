@@ -20,6 +20,7 @@ depends: [
   "serde_json"
   "yojson"
   "ppx_yojson_conv"
+  "sexplib"
   "odoc" {with-doc}
 ]
 build: [
@@ -38,10 +39,10 @@ build: [
 ]
 dev-repo: "git+https://github.com/ocaml-ai/pkgs.git"
 pin-depends: [
-  ["serde.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
-  ["serde_derive.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
-  ["serde_sexpr.dev" "https://github.com/serde-ml/sexpr/archive/main.tar.gz"]
-  ["serde_json.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
-  ["blink.dev" "https://github.com/suri-framework/blink/archive/opam-pin-depends-bug.tar.gz"]
-  ["mlx.dev" "https://github.com/ocaml-mlx/mlx/archive/opam-pin-depends-bug.tar.gz"]
+  ["serde.dev" "https://pkgs.ml/github.com/serde-ml/serde/main/serde"]
+  ["serde_derive.dev" "https://pkgs.ml/github.com/serde-ml/serde/main/serde_derive"]
+  ["serde_sexpr.dev" "https://pkgs.ml/github.com/serde-ml/sexpr/main/sexpr"]
+  ["serde_json.dev" "https://pkgs.ml/github.com/serde-ml/serde/main/serde_json"]
+  ["blink.dev" "https://pkgs.ml/github.com/suri-framework/blink/opam-pin-depends-bug/blink"]
+  ["mlx.dev" "https://pkgs.ml/github.com/ocaml-mlx/mlx/opam-pin-depends-bug/mlx"]
 ]

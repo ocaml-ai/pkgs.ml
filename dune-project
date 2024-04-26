@@ -17,6 +17,7 @@
   ; typesense-ocaml
   yojson
   ppx_yojson_conv
+  sexplib
  )
  (tags
   (topics "to describe" your project)))

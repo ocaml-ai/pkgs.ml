@@ -6,15 +6,6 @@ end)
 
 open Trail
 
-(*
-
-TODO(leostera):
-1. get all packages again
-2. query clickhouse for stats
-3. show stats on homepage
-
-*)
-
 let total_downloads () =
   Task.async @@ fun () ->
   Clickhouse.execute Config.clickhouse_config
