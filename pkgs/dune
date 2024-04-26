@@ -8,7 +8,7 @@
   nomad
   blink
   unix
-  html_of_jsx.lib
+  html_of_jsx
   typesense_blink
   serde
   serde_sexpr

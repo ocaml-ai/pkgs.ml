@@ -27,7 +27,7 @@ let navbar ?(q = "") () =
 let make ~title ~children () =
   <html lang="en">
     <head>
-      <meta charSet="utf-8"/>
+      <meta charset="utf-8"/>
       <title>(text title)</title>
       <script src="https://cdn.tailwindcss.com"></script>
     </head>

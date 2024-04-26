@@ -58,7 +58,7 @@ let stats ~total_packages ~total_downloads =
   "py-12";
   ] |> String.concat " ")>
     <div class_="flex flex-col w-2/3">
-      <div class_="flex flex-row justify-between">
+      <div class_="flex flex-row gap-6 justify-between">
         <p>
           (text I18n.description)
         </p>
