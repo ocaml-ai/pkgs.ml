@@ -18,9 +18,6 @@ depends: [
   "serde_derive"
   "serde_sexpr"
   "serde_json"
-  "cohttp"
-  "cohttp-lwt-unix"
-  "lwt_ssl"
   "yojson"
   "ppx_yojson_conv"
   "odoc" {with-doc}
