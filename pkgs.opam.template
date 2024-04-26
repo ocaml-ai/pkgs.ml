@@ -6,4 +6,5 @@ pin-depends: [
   ["serde_json.dev" "https://github.com/serde-ml/serde/archive/main.tar.gz"]
   ["blink.dev" "https://github.com/suri-framework/blink/archive/opam-pin-depends-bug.tar.gz"]
   ["mlx.dev" "https://github.com/ocaml-mlx/mlx/archive/opam-pin-depends-bug.tar.gz"]
+  ["html_of_jsx.dev" "https://github.com/davesnx/html_of_jsx/archive/main.tar.gz"]
 ]
