@@ -53,15 +53,6 @@ module Request = struct
     make ~meth:`PUT ~headers ~params ~host ~body:(Some body) path
 end
 
-let config =
-  let api_key =
-    try Sys.getenv "TYPESENSE_API_KEY" with _ -> "{TYPESENSE_API_KEY}"
-  in
-  let url =
-    try Sys.getenv "TYPESENSE_HOST" with _ -> "http://localhost:8108"
-  in
-  Typesense.{ api_key; url }
-
 let make_blink_request = function
   | Typesense.RequestDescriptor.Get { host; path; headers; params } ->
       Request.get ~headers ~params ~host path

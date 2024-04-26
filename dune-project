@@ -14,6 +14,8 @@
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends ocaml dune trail nomad blink mlx html_of_jsx
+ ; cohttp
+ cohttp cohttp-lwt-unix lwt_ssl
   ; typesense-ocaml
   yojson
   ppx_yojson_conv

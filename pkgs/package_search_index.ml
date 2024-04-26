@@ -37,12 +37,29 @@ let collection_name = "packages"
    {"name":"pkg","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
    {"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"} *)
 
+(*
+curl "https://app.threadle.net/typesense/collections" \
+       -X POST \
+       -H "Content-Type: application/json" \
+       -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" \
+       -d '{"name":"packages","fields":[{"name":"id", "type":"string"},{"name":"source","type":"string"},
+   {"name":"org","type":"string"},{"name":"repo","type":"string"},{"name":"ref","type":"string"},
+   {"name":"pkg","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
+   {"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"}'
+
+
+   curl -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" \
+"https://app.threadle.net/typesense/collections/packages/documents/search\
+?q=riot&query_by=pkg"
+
+*)
+
 let ( let* ) = Result.bind
 
 let run_request r =
   print_endline @@ Typesense.RequestDescriptor.show_request r;
   print_endline Config.typesense_config.url;
-  Typesense_blink.make_blink_request r
+  Typesense_lwt_cohttp.make_cohttp_lwt_request r
 
 (*
    let delete_collection () =

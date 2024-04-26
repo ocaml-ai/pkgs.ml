@@ -1,6 +1,6 @@
 (library
- (name typesense_blink)
+ (name typesense)
  (wrapped false)
- (libraries yojson uri riot blink)
+ (libraries yojson uri riot blink cohttp cohttp-lwt-unix)
  (preprocess
   (pps ppx_yojson_conv)))

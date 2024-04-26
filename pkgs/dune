@@ -9,7 +9,9 @@
   blink
   unix
   html_of_jsx.lib
-  typesense_blink
+  typesense
+  cohttp
+  cohttp-lwt-unix
   ppx_yojson_conv))
 
 (env
