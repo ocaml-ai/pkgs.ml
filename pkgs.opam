@@ -37,6 +37,6 @@ build: [
 ]
 dev-repo: "git+https://github.com/ocaml-ai/pkgs.git"
 pin-depends: [
-  ["blink.dev" "https://pkgs-ml.fly.dev/p/github.com/suri-framework/blink/opam-pin-depends-bug/blink"]
-  ["mlx.dev" "https://pkgs-ml.fly.dev/p/github.com/ocaml-mlx/mlx/opam-pin-depends-bug/mlx"]
+  ["blink.dev" "https://github.com/suri-framework/blink/archive/opam-pin-depends-bug.tar.gz"]
+  ["mlx.dev" "https://github.com/ocaml-mlx/mlx/archive/opam-pin-depends-bug.tar.gz"]
 ]
