@@ -21,7 +21,6 @@ depends: [
   "yojson"
   "ppx_yojson_conv"
   "sexplib"
-  "stdune"
   "odoc" {with-doc}
 ]
 build: [
