@@ -14,9 +14,6 @@ depends: [
   "blink"
   "mlx"
   "html_of_jsx"
-  "cohttp"
-  "cohttp-lwt-unix"
-  "tls-lwt"
   "yojson"
   "ppx_yojson_conv"
   "odoc" {with-doc}
