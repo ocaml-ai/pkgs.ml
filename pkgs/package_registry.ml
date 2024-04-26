@@ -15,18 +15,22 @@ type add_package_request = {
   package_name : string;
 }
 
-type Message.t += AddPackage of add_package_request
+type Message.t +=
+  | AddPackage of add_package_request * unit Ref.t * Pid.t
+  | PackageAdded of unit Ref.t
 
 let rec loop () =
   let selector msg =
-    match msg with AddPackage req -> `select (`add_package req) | _ -> `skip
+    match msg with
+    | AddPackage (req, ref, reply) -> `select (`add_package (req, ref, reply))
+    | _ -> `skip
   in
   match receive ~selector () with
-  | `add_package req ->
-      let _ = spawn (fun () -> handle_add_package req) in
+  | `add_package (req, ref, reply) ->
+      let _ = spawn (fun () -> handle_add_package req ref reply) in
       loop ()
 
-and handle_add_package { source; org; repo; ref; package_name } =
+and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
   info (fun f ->
       f "Adding package %s from %s/%s/%s/%s" package_name source org repo ref);
   let _packages =
@@ -57,7 +61,7 @@ and handle_add_package { source; org; repo; ref; package_name } =
         })
     |> Result.get_ok
   in
-  ()
+  send reply (PackageAdded msg_ref)
 
 let init () =
   info (fun f -> f "Initialitizing package registry");
@@ -68,4 +72,14 @@ let start_link () =
   register registry_name pid;
   Ok pid
 
-let add_package req = send_by_name ~name:registry_name (AddPackage req)
+let add_package req =
+  let this = self () in
+  let ref = Ref.make () in
+  send_by_name ~name:registry_name (AddPackage (req, ref, this));
+
+  let selector msg =
+    match msg with
+    | PackageAdded ref' when Ref.equal ref ref' -> `select ()
+    | _ -> `skip
+  in
+  receive ~selector ()

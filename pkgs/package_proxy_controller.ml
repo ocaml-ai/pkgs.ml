@@ -20,7 +20,7 @@ let proxy conn =
       }
   in
 
-  Package_registry.add_package req;
+  let _ = spawn (fun () -> Package_registry.add_package req) in
 
   let tarball_url = Github.get_ref_tarball ~org ~repo ~ref in
 
