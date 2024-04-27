@@ -13,4 +13,7 @@ let package_install ~source ~org ~repo ~ref =
   in
   match Clickhouse.execute Config.clickhouse_config query with
   | Ok _ -> info (fun f -> f "registered install")
-  | Error _e -> error (fun f -> f "something went wrong")
+  | Error `no_data_in_file -> error (fun f -> f "no data in file")
+  | Error `no_status_found -> error (fun f -> f "no status found")
+  | Error (#Riot.IO.io_error as e) -> error (fun f -> f "%a" Riot.IO.pp_err e)
+  | _ -> error (fun f -> f "other error")
