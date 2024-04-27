@@ -1,7 +1,17 @@
 open Jsx
 
 let render_package (package: Package_search_index.document) =
-  <a class_="flex underline hover:no-underline" href=(Url.package_info_url package)>(text package.id)</a>
+  <a class_="group" href=(Url.package_info_url package)>
+    <div class_="flex gap-4">
+      <h2 class_="text-lg font-semibold flex group-hover:underline">
+      (text package.name)
+      </h2>
+      <div class_="text-lg text-gray-500">(text package.ref)</div>
+    </div>
+    <div class_="text-gray-600 text-sm">
+      (text (package.source ^ "/" ^ package.org ^ "/" ^ package.repo))
+    </div>
+  </a>
 
 let render ~found ~q ~(packages: Package_search_index.document list) =
   let package_els = List.map render_package packages in
@@ -14,6 +24,8 @@ let render ~found ~q ~(packages: Package_search_index.document list) =
       </div>
     </div>
     <div class_="container mx-auto">
-      (list package_els)
+      <div class_="flex flex-col gap-4">
+        (list package_els)
+      </div>
     </div>
   </Template_layout>
