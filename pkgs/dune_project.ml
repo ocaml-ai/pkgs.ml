@@ -60,8 +60,8 @@ let of_string raw =
       let package =
         {
           name = !name |> Option.get;
-          synopsis = !synopsis |> Option.get;
-          description = !description |> Option.get;
+          synopsis = !synopsis |> Option.value ~default:"";
+          description = !description |> Option.value ~default:"";
           tags = !tags;
         }
       in
