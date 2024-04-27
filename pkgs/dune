@@ -8,6 +8,7 @@
   nomad
   blink
   unix
+  opam-format
   html_of_jsx
   typesense_blink
   serde

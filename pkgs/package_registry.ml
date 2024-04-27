@@ -46,6 +46,20 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
 
   Package_metrics.package_install ~source ~org ~repo ~ref;
 
+  let packages =
+    if List.length packages = 0 then
+      (match Github.get_file ~org ~repo ~ref ~file:(package_name ^ ".opam") with
+      | Ok (200, contents) -> Opam_file.of_string ~name:package_name contents
+      | Ok (n, _) -> failwith (Format.sprintf "get file failed status=%d" n)
+      | Error `no_data_in_file -> failwith "no data in file"
+      | Error `no_status_found -> failwith "no status found"
+      | Error (#Riot.IO.io_error as e) ->
+          failwith (Format.asprintf "%a" Riot.IO.pp_err e)
+      | _ -> failwith "other error")
+      @ packages
+    else packages
+  in
+
   packages
   |> List.map (fun (p : Dune_project.package) ->
          Package_search_index.

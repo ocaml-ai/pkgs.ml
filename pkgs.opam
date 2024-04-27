@@ -18,6 +18,7 @@ depends: [
   "serde_derive"
   "serde_sexpr"
   "serde_json"
+  "opam-format"
   "yojson"
   "ppx_yojson_conv"
   "sexplib"
