@@ -41,21 +41,22 @@ let render ~(package_info: Package_search_index.document) =
   let text_to_copy = Printf.sprintf {|["%s.pkgs_ml" "%s"]|} package_info.name (Url.package_download_url package_info) in
   <Template_layout title=(title)>
     (Template_layout.navbar ())
-    <div class_="mt-12 py-6">
-      <div class_="container mx-auto">
-        <h1 class_="text-2xl mb-4 font-semibold">(text title)</h1>
-        <div>(text package_info.synopsis)</div>
-        <a class_="underline hover:no-underline" href=("https://" ^ repo_url)>(text (repo_url))</a>
+    <div class_="container mx-auto mt-12 py-6">
+      <h1 class_="text-2xl mb-4 font-semibold">(text title)</h1>
+      <div>(text package_info.synopsis)</div>
+      <a class_="underline hover:no-underline" href=("https://" ^ repo_url)>(text (repo_url))</a>
+
+      <div class_="p-4 border border-orange-500 mt-6">
+        <h2 class_="text-lg font-semibold mb-2">"Description"</h2>
+        (text package_info.description)
+      </div>
+
+      <div class_="mt-6 flex gap-2 flex-wrap">
+        (list (List.map render_tag package_info.tags))
       </div>
     </div>
     <div class_="container mx-auto">
       <h2 class_="text-lg font-semibold mb-2">"Copy this to your *.opam.template file:"</h2>
       (copy_to_clipboard_snippet ~text_to_copy)
-
-      <h2>"Description"</h2>
-      (text package_info.description)
-    </div>
-    <div class_="flex gap-2 flex-wrap">
-    (list (List.map render_tag package_info.tags))
     </div>
   </Template_layout>
