@@ -31,6 +31,7 @@ let render_facet_count_schema (facet: Typesense.Search.SearchResponse.FacetCount
 let render
   ~found
   ~q
+  ~(pagination: Pagination.t)
   ~(packages: Package_search_index.document list)
   ~(facet_counts: Typesense.Search.SearchResponse.FacetCounts.t)
 =
@@ -48,6 +49,8 @@ let render
           <div class_="flex flex-col gap-4">
             (list package_els)
           </div>
+
+          (Pagination.make ~p:pagination)
         </div>
         <div class_="hidden md:block w-60 pl-4 order-0">
           (list (List.map render_facet_count_schema facet_counts))

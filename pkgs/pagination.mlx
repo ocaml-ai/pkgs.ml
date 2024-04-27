@@ -1,0 +1,62 @@
+open Jsx
+
+type t = {
+  base_url : string;
+  current_page : int;
+  total_pages: int;
+  queries: (string * string) list;
+}
+
+let rec construct_query_string = function
+  | h :: t -> "&" ^ (fst h) ^ "=" ^ (snd h) ^ construct_query_string t
+  | [] -> ""
+
+let paginated_href ~base_url ~page ~queries =
+  base_url ^ "?p=" ^ string_of_int page ^ (construct_query_string
+  queries)
+
+let link ~base_url ~page ~queries ~current_page =
+  let active_class = "border-2 border-current text-primary dark:text-dark-primary" in
+  let non_active_class = "border border-separator_20 dark:border-dark-separator_30 text-content dark:text-dark-content hover:opacity-60 hover:no-underline" in
+  <a href=((paginated_href ~base_url ~page ~queries))
+    class_=("w-10 h-10 lg:w-14 lg:h-14 rounded-lg flex items-center justify-center" ^ (if page = current_page then active_class else non_active_class))>
+    (text (string_of_int page))
+  </a>
+
+let left_arrow ~base_url ~current_page ~queries =
+  <a href=((paginated_href ~base_url ~page:(current_page - 1) ~queries))
+    class_="w-10 h-10 lg:w-14 lg:h-14  border border-separator_20 dark:border-dark-separator_30 rounded-lg flex items-center justify-center text-content dark:text-dark-content hover:opacity-60 hover:no-underline">
+    "prev"
+  </a>
+
+let right_arrow ~base_url current_page ~queries =
+  <a href=((paginated_href ~base_url ~page:(current_page + 1) ~queries))
+    class_="w-10 h-10 lg:w-14 lg:h-14  border border-separator_20 dark:border-dark-separator_30 rounded-lg flex items-center justify-center text-content dark:text-dark-content hover:opacity-60 hover:no-underline">
+    "next"
+  </a>
+
+let make ~p =
+  match p.total_pages > 1 with
+  | true ->
+    let els =
+      (if p.current_page != 1 then [left_arrow ~base_url:p.base_url ~current_page:p.current_page ~queries:p.queries]
+        else [])
+      @ (if p.current_page >= 4 then [
+            <span class_="w-10 h-10 lg:w-14 lg:h-14 border-body-100 rounded-lg flex items-center justify-center text-content hover:no-underline">"..."</span>
+        ] else [])
+      @ (List.init p.total_pages Fun.id |> List.map (fun page -> let page = page + 1 in
+         (if (abs (p.current_page - page) <= 1) || (p.current_page = 1 && page = 3) || (p.current_page = p.total_pages && p.total_pages - page = 2) then
+            [link ~base_url:p.base_url ~page ~current_page:p.current_page ~queries:p.queries]
+          else [])
+        ) |> List.concat)
+      @ (if p.total_pages - p.current_page >= 3 then [
+        <span class_="w-10 h-10 lg:w-14 lg:h-14 border-body-100 rounded-lg flex items-center justify-center text-content hover:no-underline">"..."</span>
+        ] else [])
+      @ [link ~base_url:p.base_url ~page:p.total_pages ~current_page:p.current_page ~queries:p.queries]
+      @ (if p.current_page != p.total_pages then [right_arrow ~base_url:p.base_url p.current_page ~queries:p.queries] else [])
+    in
+    <div class_="pt-16 flex items-center justify-center space-x-2.5">
+      (list els)
+    </div>
+  | false ->
+    <div></div>
