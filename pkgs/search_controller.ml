@@ -15,11 +15,15 @@ let get conn =
   let packages, found, _, facet_counts =
     Package_search_index.search
       ~search_params:
-        (Typesense.Search.make_search_params ~q ~query_by:"org,name,synopsis,description,tags"
-           ~query_by_weights:"3,8,1,1,1" ~facet_by:"tags" ~max_facet_values:50 ~per_page:100
-           ~page:(p |> int_of_string) ())
+        (Typesense.Search.make_search_params ~q
+           ~query_by:"org,name,synopsis,description,tags"
+           ~query_by_weights:"3,8,1,1,1" ~facet_by:"tags" ~max_facet_values:50
+           ~per_page:100 ~page:(p |> int_of_string) ())
       ()
     |> Result.get_ok
   in
-  let html = Template_search.render ~found ~q ~packages ~facet_counts |> Html_of_jsx.render in
+  let html =
+    Template_search.render ~found ~q ~packages ~facet_counts
+    |> Html_of_jsx.render
+  in
   conn |> Conn.send_response `OK {%b|"<!doctype html>"::string,html::string|}

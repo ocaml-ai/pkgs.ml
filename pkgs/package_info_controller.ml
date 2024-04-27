@@ -28,7 +28,8 @@ let get conn =
   let packages, _, _, _ =
     Package_search_index.search
       ~search_params:
-        (Typesense.Search.make_search_params ~q:"" ~query_by:"name" ~filter_by:("id:"^package_id) ~per_page:1 ())
+        (Typesense.Search.make_search_params ~q:"" ~query_by:"name"
+           ~filter_by:("id:" ^ package_id) ~per_page:1 ())
       ()
     |> Result.get_ok
   in
