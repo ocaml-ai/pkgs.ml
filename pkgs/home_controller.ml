@@ -14,10 +14,10 @@ let total_downloads () =
 
 let total_packages () =
   (* Task.async @@ fun () -> *)
+  (* NOTE(@sabine): I removed Task.async here because the homepage would just "hang" *)
   Package_search_index.get_total_packages ()
 
 let get conn =
-  (* let (packages, _, _, _) = Package_search_index.search ~q:"" () |> Result.get_ok in *)
   let total_downloads = total_downloads () in
   let total_packages = total_packages () in
   let total_downloads = Task.await total_downloads |> Result.get_ok in
