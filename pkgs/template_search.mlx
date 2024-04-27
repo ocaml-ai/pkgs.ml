@@ -40,7 +40,7 @@ let render
     (Template_layout.navbar ~q ())
     <div class_="mt-12 py-6">
       <div class_="flex gap-10">
-        <div class_="order-1">
+        <div class_="px-4 order-1">
           <div class_="container mx-auto">
             <h1 class_="text-2xl mb-4 font-semibold">(text title)</h1>
           </div>
@@ -49,7 +49,7 @@ let render
             (list package_els)
           </div>
         </div>
-        <div class_="w-60 pl-4 order-0">
+        <div class_="hidden md:block w-60 pl-4 order-0">
           (list (List.map render_facet_count_schema facet_counts))
         </div>
       </div>
