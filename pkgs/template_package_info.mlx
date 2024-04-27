@@ -1,5 +1,10 @@
 open Jsx
 
+let render_tag t =
+  <div class_="px-2 py-1 bg-orange-700 text-white rounded-md">
+  (text t)
+  </div>
+
 let copy_to_clipboard_snippet ~text_to_copy =
   let js_script =
     {| function showCopyToClipboardMessage() { var el = document.getElementById("copy_to_clipboard_message"); el.classList.remove("hidden"); setTimeout(() => { el.classList.add("hidden"); }, 3000); } |}
@@ -28,22 +33,29 @@ let copy_to_clipboard_snippet ~text_to_copy =
     </button>
   </div>
 
-let render ~(package_info: Package_registry.add_package_request) =
+let render ~(package_info: Package_search_index.document) =
   let title =
-    package_info.package_name ^ " (" ^ package_info.ref ^ ")"
+    package_info.name ^ " (" ^ package_info.ref ^ ")"
   in
   let repo_url = package_info.source ^ "/" ^package_info.org ^ "/" ^ package_info.repo in
-  let text_to_copy = Printf.sprintf {|["%s.pkgs_ml" "%s"]|} package_info.package_name (Url.package_download_url package_info) in
+  let text_to_copy = Printf.sprintf {|["%s.pkgs_ml" "%s"]|} package_info.name (Url.package_download_url package_info) in
   <Template_layout title=(title)>
     (Template_layout.navbar ())
     <div class_="mt-12 py-6">
       <div class_="container mx-auto">
         <h1 class_="text-2xl mb-4 font-semibold">(text title)</h1>
+        <div>(text package_info.synopsis)</div>
         <a class_="underline hover:no-underline" href=("https://" ^ repo_url)>(text (repo_url))</a>
       </div>
     </div>
     <div class_="container mx-auto">
       <h2 class_="text-lg font-semibold mb-2">"Copy this to your *.opam.template file:"</h2>
       (copy_to_clipboard_snippet ~text_to_copy)
+
+      <h2>"Description"</h2>
+      (text package_info.description)
+    </div>
+    <div class_="flex gap-2 flex-wrap">
+    (list (List.map render_tag package_info.tags))
     </div>
   </Template_layout>

@@ -843,7 +843,7 @@ module Search = struct
       hits: search_response_hit list;
     } [@@deriving of_yojson] [@@yojson.allow_extra_fields]
     type t = {
-      facet_counts : FacetCounts.t;
+      facet_counts : FacetCounts.t; [@default []]
       found : int;
       search_time_ms : int;
       out_of : int;

@@ -6,13 +6,13 @@ type document = {
   org : string;
   repo : string;
   ref : string;
-  pkg : string;
+  name : string;
   synopsis : string;
   description : string;
   tags : string list;
   downloads : int64;
 }
-[@@deriving yojson]
+[@@deriving yojson] [@@yojson.allow_extra_fields]
 
 let collection_name = "packages"
 
@@ -24,7 +24,7 @@ let collection_name = "packages"
          create_field "org" String;
          create_field "repo" String;
          create_field "ref" String;
-         create_field "pkg" String;
+         create_field "name" String;
          create_field "synopsis" String;
          create_field "description" String;
          create_field "tags" StringArray ~facet:true;
@@ -34,7 +34,7 @@ let collection_name = "packages"
 
 (* {"name":"packages","fields":[{"name":"id", "type":"string"},{"name":"source","type":"string"},
    {"name":"org","type":"string"},{"name":"repo","type":"string"},{"name":"ref","type":"string"},
-   {"name":"pkg","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
+   {"name":"name","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
    {"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"} *)
 
 (*
@@ -44,7 +44,7 @@ curl "https://typesense.pkgs.ml/collections" \
        -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" \
        -d '{"name":"packages","fields":[{"name":"id", "type":"string"},{"name":"source","type":"string"},
    {"name":"org","type":"string"},{"name":"repo","type":"string"},{"name":"ref","type":"string"},
-   {"name":"pkg","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
+   {"name":"name","type":"string"},{"name":"synopsis","type":"string"},{"name":"description","type":"string"},{"name":"tags","type":"string[]","facet":true},
    {"name":"downloads","type":"int64"}],"default_sorting_field":"downloads"}'
    
 *)
@@ -72,15 +72,11 @@ let add_package document =
        ~collection_name
        (document |> yojson_of_document))
 
-let search ?(p = "1") ~q () =
+let search ~search_params () =
   let* response =
     run_request
       (Typesense.Search.search ~config:Config.typesense_config ~collection_name
-         ~search_params:
-           (Typesense.Search.make_search_params ~q ~query_by:"org,pkg"
-              ~query_by_weights:"1,3" ~facet_by:"tags" ~per_page:100
-              ~page:(p |> int_of_string) ())
-         ())
+         ~search_params ())
   in
   let r =
     try

@@ -55,7 +55,7 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
              org;
              repo;
              ref;
-             pkg = p.name;
+             name = p.name;
              synopsis = p.synopsis;
              description = p.description;
              tags = p.tags;
@@ -73,7 +73,7 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
                   | _ -> "other error"
                 in
                 info (fun f ->
-                    f "Failed to add package %s from %s/%s/%s/%s: %s" p.pkg
+                    f "Failed to add package %s from %s/%s/%s/%s: %s" p.name
                       source org repo ref msg);
                 e)
          |> ignore);
