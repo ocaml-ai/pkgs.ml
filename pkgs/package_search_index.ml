@@ -97,3 +97,18 @@ let search ~search_params () =
       r.facet_counts )
   in
   Ok result
+
+let get_total_packages () =
+  let* response =
+    run_request
+      (Typesense.Collection.retrieve ~config:Config.typesense_config
+         collection_name)
+  in
+  let r =
+    try
+      response |> Yojson.Safe.from_string
+      |> Typesense.Schema.collection_of_yojson
+    with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+      failwith (Printexc.to_string s)
+  in
+  Ok r.num_documents

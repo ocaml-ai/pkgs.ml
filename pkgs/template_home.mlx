@@ -74,7 +74,7 @@ let stats ~total_packages ~total_downloads =
         </div>
         <div class_="flex flex-row gap-4 justify-center items-center">
           <div class_="flex flex-col justify-end items-end">
-            <span class_="font-bold text-3xl">(text total_packages)</span>
+            <span class_="font-bold text-3xl">(text (string_of_int total_packages))</span>
             <span class_="_label_1laxax">(text I18n.packages )</span>
           </div>
           <div class_="w-[48px]">
