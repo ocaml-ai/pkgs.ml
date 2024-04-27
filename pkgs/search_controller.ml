@@ -12,7 +12,7 @@ let get conn =
     try Trail.Conn.(conn.req.query) |> List.assoc "p" |> List.hd
     with Not_found -> "1"
   in
-  let packages, found, _, _ =
+  let packages, found, _, facet_counts =
     Package_search_index.search
       ~search_params:
         (Typesense.Search.make_search_params ~q ~query_by:"org,name,synopsis,description,tags"
@@ -21,5 +21,5 @@ let get conn =
       ()
     |> Result.get_ok
   in
-  let html = Template_search.render ~found ~q ~packages |> Html_of_jsx.render in
+  let html = Template_search.render ~found ~q ~packages ~facet_counts |> Html_of_jsx.render in
   conn |> Conn.send_response `OK {%b|"<!doctype html>"::string,html::string|}

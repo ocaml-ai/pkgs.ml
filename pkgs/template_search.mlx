@@ -11,9 +11,29 @@ let render_package (package: Package_search_index.document) =
     <div class_="text-gray-600 text-sm">
       (text (package.source ^ "/" ^ package.org ^ "/" ^ package.repo))
     </div>
+    <div>
+    (text package.synopsis)
+    </div>
   </a>
 
-let render ~found ~q ~(packages: Package_search_index.document list) =
+let render_facet_count_schema (facet: Typesense.Search.SearchResponse.FacetCounts.facet_count_schema) =
+  let render_facet_count (count: Typesense.Search.SearchResponse.FacetCounts.facet_count) =
+    <a class_="group flex gap-4" href=("/search?q=" ^ count.value)>
+      <div class_="group-hover:underline text-orange-700 font-semibold">(text count.value)</div>
+      <div class_="">(text (string_of_int count.count))</div>
+    </a>
+  in
+  <div>
+    <h3 class_="font-semibold">(text facet.field_name)</h3>
+    (list (List.map render_facet_count facet.counts))
+  </div>
+
+let render
+  ~found
+  ~q
+  ~(packages: Package_search_index.document list)
+  ~(facet_counts: Typesense.Search.SearchResponse.FacetCounts.t)
+=
   let package_els = List.map render_package packages in
   let title = string_of_int found ^ " Search Results for '" ^ q ^ "'" in
   <Template_layout title=(title)>
@@ -27,5 +47,9 @@ let render ~found ~q ~(packages: Package_search_index.document list) =
       <div class_="flex flex-col gap-4">
         (list package_els)
       </div>
+    </div>
+
+    <div>
+    (list (List.map render_facet_count_schema facet_counts))
     </div>
   </Template_layout>
