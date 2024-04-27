@@ -8,7 +8,8 @@ let endpoint =
         [
           get "/" Home_controller.get;
           get "/search" Search_controller.get;
-          post "/publish" Publish_controller.publish;
+          (* post "/publish" Publish_controller.publish; *)
+          get "/publish" Publish_controller.publish;
           get "/i/:source/:org/:repo/:ref/:pkg" Package_info_controller.get;
           scope "/p"
             [
