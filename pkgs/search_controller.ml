@@ -16,7 +16,7 @@ let get conn =
     Package_search_index.search
       ~search_params:
         (Typesense.Search.make_search_params ~q ~query_by:"org,name,synopsis,description,tags"
-           ~query_by_weights:"3,8,1,1,1" ~facet_by:"tags" ~per_page:100
+           ~query_by_weights:"3,8,1,1,1" ~facet_by:"tags" ~max_facet_values:50 ~per_page:100
            ~page:(p |> int_of_string) ())
       ()
     |> Result.get_ok
