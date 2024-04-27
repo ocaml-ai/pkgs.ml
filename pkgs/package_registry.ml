@@ -39,7 +39,8 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
     | Ok (n, _) -> failwith (Format.sprintf "get file failed status=%d" n)
     | Error `no_data_in_file -> failwith "no data in file"
     | Error `no_status_found -> failwith "no status found"
-    | Error (#Riot.IO.io_error as e) -> failwith (Format.asprintf "%a" Riot.IO.pp_err e)
+    | Error (#Riot.IO.io_error as e) ->
+        failwith (Format.asprintf "%a" Riot.IO.pp_err e)
     | _ -> failwith "other error"
   in
 

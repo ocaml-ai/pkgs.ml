@@ -52,8 +52,8 @@ curl "https://typesense.pkgs.ml/collections" \
 let ( let* ) = Result.bind
 
 let run_request r =
-  print_endline @@ Typesense.RequestDescriptor.show_request r;
-  print_endline Config.typesense_config.url;
+  Riot.Logger.info (fun f ->
+      f "Typesense request: %s" (Typesense.RequestDescriptor.show_request r));
   Typesense_blink.make_blink_request r
 
 (*
