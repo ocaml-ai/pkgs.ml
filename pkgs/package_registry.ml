@@ -33,7 +33,7 @@ let rec loop () =
 and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
   info (fun f ->
       f "Adding package %s from %s/%s/%s/%s" package_name source org repo ref);
-  let _packages =
+  let packages =
     match Github.get_file ~org ~repo ~ref ~file:"dune-project" with
     | Ok (200, contents) -> Dune_project.of_string contents
     | Ok (n, _) -> failwith (Format.sprintf "get file failed status=%d" n)
@@ -46,23 +46,38 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
 
   Package_metrics.package_install ~source ~org ~repo ~ref;
 
-  let _ =
-    Package_search_index.(
-      add_package
-        {
-          id = Printf.sprintf "%s/%s/%s/%s/%s" source org repo ref package_name;
-          source;
-          org;
-          repo;
-          ref;
-          pkg = package_name;
-          synopsis = "";
-          description = "";
-          tags = [];
-          downloads = 0L;
-        })
-    |> Result.get_ok
-  in
+  packages
+  |> List.map (fun (p : Dune_project.package) ->
+         Package_search_index.
+           {
+             id = Printf.sprintf "%s/%s/%s/%s/%s" source org repo ref p.name;
+             source;
+             org;
+             repo;
+             ref;
+             pkg = p.name;
+             synopsis = p.synopsis;
+             description = p.description;
+             tags = p.tags;
+             downloads = 0L;
+           })
+  |> List.iter (fun (p : Package_search_index.document) ->
+         Package_search_index.add_package p
+         |> Result.map_error (fun e ->
+                let msg =
+                  match e with
+                  | `no_data_in_file -> "no data in file"
+                  | `no_status_found -> "no status found"
+                  | #Riot.IO.io_error as e ->
+                      Format.asprintf "%a" Riot.IO.pp_err e
+                  | _ -> "other error"
+                in
+                info (fun f ->
+                    f "Failed to add package %s from %s/%s/%s/%s: %s" p.pkg
+                      source org repo ref msg);
+                e)
+         |> ignore);
+
   send reply (PackageAdded msg_ref)
 
 let init () =
