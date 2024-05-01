@@ -19,6 +19,7 @@ let get_file ~org ~repo ~ref ~file =
     let* conn = Blink.connect github_user_content_host in
     let req =
       let url = Format.sprintf "%s/%s/%s/%s" org repo ref file in
+      info (fun f -> f "Fetching GitHub file at %s" url);
       Http.Request.make url
     in
     let* conn = Blink.request conn req () in
