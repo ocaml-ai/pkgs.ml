@@ -35,13 +35,8 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
       f "Adding package %s from %s/%s/%s/%s" package_name source org repo ref);
   let packages =
     match Github.get_file ~org ~repo ~ref ~file:"dune-project" with
-    | Ok (200, contents) -> Dune_project.of_string contents
-    | Ok (n, _) -> failwith (Format.sprintf "get file failed status=%d" n)
-    | Error `no_data_in_file -> failwith "no data in file"
-    | Error `no_status_found -> failwith "no status found"
-    | Error (#Riot.IO.io_error as e) ->
-        failwith (Format.asprintf "%a" Riot.IO.pp_err e)
-    | _ -> failwith "other error"
+    | Ok contents -> Dune_project.of_string contents
+    | Error (`Msg m) -> failwith m
   in
 
   Package_metrics.package_install ~source ~org ~repo ~ref;
@@ -49,13 +44,8 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
   let packages =
     if List.length packages = 0 then
       (match Github.get_file ~org ~repo ~ref ~file:(package_name ^ ".opam") with
-      | Ok (200, contents) -> Opam_file.of_string ~name:package_name contents
-      | Ok (n, _) -> failwith (Format.sprintf "get file failed status=%d" n)
-      | Error `no_data_in_file -> failwith "no data in file"
-      | Error `no_status_found -> failwith "no status found"
-      | Error (#Riot.IO.io_error as e) ->
-          failwith (Format.asprintf "%a" Riot.IO.pp_err e)
-      | _ -> failwith "other error")
+      | Ok contents -> Opam_file.of_string ~name:package_name contents
+      | Error (`Msg m) -> failwith m)
       @ packages
     else packages
   in
@@ -76,21 +66,14 @@ and handle_add_package { source; org; repo; ref; package_name } msg_ref reply =
              downloads = 0L;
            })
   |> List.iter (fun (p : Package_search_index.document) ->
-         Package_search_index.add_package p
-         |> Result.map_error (fun e ->
-                let msg =
-                  match e with
-                  | `no_data_in_file -> "no data in file"
-                  | `no_status_found -> "no status found"
-                  | #Riot.IO.io_error as e ->
-                      Format.asprintf "%a" Riot.IO.pp_err e
-                  | _ -> "other error"
-                in
-                info (fun f ->
-                    f "Failed to add package %s from %s/%s/%s/%s: %s" p.name
-                      source org repo ref msg);
-                e)
-         |> ignore);
+         match Package_search_index.add_package p with
+         | Ok _ -> ()
+         | Error (`Msg msg) ->
+             info (fun f ->
+                 f
+                   "Failed to add package %s from %s/%s/%s/%s to the search \
+                    index: %s"
+                   p.name source org repo ref msg));
 
   send reply (PackageAdded msg_ref)
 

@@ -28,7 +28,7 @@ module Request = struct
       | frames -> stream conn (frames @ acc)
     in
     let* parts = stream conn [] in
-    let* _status =
+    let* status =
       List.find_map
         (fun (frame : Blink.Connection.message) ->
           match frame with
@@ -44,7 +44,7 @@ module Request = struct
       |> List.fold_left Bytestring.join Bytestring.empty
       |> Bytestring.to_string
     in
-    Ok data
+    Ok (status, data)
 
   let get ?(headers = []) ?(params = []) ~host path =
     make ~meth:`GET ~headers ~params ~host path

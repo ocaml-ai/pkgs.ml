@@ -54,7 +54,15 @@ let ( let* ) = Result.bind
 let run_request r =
   Riot.Logger.info (fun f ->
       f "Typesense request: %s" (Typesense.RequestDescriptor.show_request r));
-  Typesense_blink.make_blink_request r
+  let response = Typesense_blink.make_blink_request r in
+  match response with
+  | Ok (200, contents) -> Ok contents
+  | Ok (n, _) -> Error (`Msg (Printf.sprintf "get file failed status=%d" n))
+  | Error `no_data_in_file -> Error (`Msg "no data in file")
+  | Error `no_status_found -> Error (`Msg "no status found")
+  | Error (#Riot.IO.io_error as e) ->
+      Error (`Msg (Format.asprintf "%a" Riot.IO.pp_err e))
+  | _ -> Error (`Msg "other error")
 
 (*
    let delete_collection () =

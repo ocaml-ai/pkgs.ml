@@ -11,7 +11,7 @@ type publish_request = {
 [@@deriving deserialize]
 
 let[@warning "-8"] publish conn =
-let Package_registry.({ ref = _; _ } as req) =
+  let Package_registry.({ ref = _; _ } as req) =
     Trail.Conn.
       {
         source = conn.params |> List.assoc "source";
@@ -24,19 +24,17 @@ let Package_registry.({ ref = _; _ } as req) =
 
   let _ = spawn (fun () -> Package_registry.add_package req) in
 
-
   (* let (Conn.Ok (conn, body)) = Conn.read_body conn in
-  let (Ok req) =
-    Serde_json.of_string deserialize_publish_request (Bytestring.to_string body)
-  in
+     let (Ok req) =
+       Serde_json.of_string deserialize_publish_request (Bytestring.to_string body)
+     in
 
-  Package_registry.add_package
-    {
-      source = req.source;
-      org = req.source;
-      repo = req.repo;
-      ref = req.version;
-      package_name = req.name;
-    }; *)
-
+     Package_registry.add_package
+       {
+         source = req.source;
+         org = req.source;
+         repo = req.repo;
+         ref = req.version;
+         package_name = req.name;
+       }; *)
   conn |> Conn.send_status `OK
